@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    link(rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css")
+    title Location
+    script(src="http://code.jquery.com/jquery-1.11.1.min.js")
+    script(src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js")
+    script(src="/socket.io/socket.io.js")
+    script.
+      $(document).ready(function () {
+        $('a').click(function () {
+          var socket = io.connect();
+          var name = $('#textinput').val();
+          socket.emit('join', name);
+
+          socket.on('receive', function (data) {
+            var latitude = data.latitude
+            var longitude = data.longitude
+
+            var output = '';
+            output += '<h3>latitude: ' + latitude + '</h3>';
+            output += '<h3>longitude: ' + longitude + '</h3>';
+            output += '<p>' + data.date + '</p>';
+            $('<li></li>').append(output).prependTo('#listview');
+
+            var content = $('#content');
+            if (content.children().length > 7) {
+              content.children().last().remove();
+            }
+
+            $('#listview').listview('refresh');
+          });
+
+          navigator.geolocation.watchPosition(function (position) {
+            socket.emit('location', {
+              name: name,
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            });
+          }, function (error) {
+            alert(error.message)
+          });
+        });
+      });
+  body 
+    div(data-role="page")
+      div(data-role="header")
+        h1 Location Tracker
+      div(data-role="content")
+        div(data-role="fieldcontain")
+          label(for="textinput") Name
+          input(type="text", id="textinput")
+        a(href="#tracker", class="ui-bin ui-bin-b") Start Track
+
+    div(data-role="page", id="tracker")
+      div(data-role="header" data-them="b")
+        h1 Location Tracker
+      div(data-role="content")
+        ui(id="listview", data-role="listview", data-inset="true")
+      
+
+    
+    
+  

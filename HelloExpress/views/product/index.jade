@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+  h1 #{title}
+  p Node.js Programming for Modern Web Development
+  hr
+  a(href="/product/insert") INSERT DATA
+  table(width='100%' border='1')
+    tr
+      th Delete
+      th Edit
+      th Id
+      th Name
+      th Model Number
+      th Series
+    each item in data
+      tr
+        td
+          a(href="/product/delete/"+item.id) Delete
+        td
+          a(href=`/product/edit/${item.id}`) Edit
+        td= item.id
+        td= item.name
+        td= item.modelnumber
+        th= item.series

@@ -1,0 +1,21 @@
+CREATE DATABASE Location;
+
+USE Location;
+
+CREATE TABLE locations (
+id INT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(50) NOT NULL,
+latitude DOUBLE NOT NULL,
+longitude DOUBLE NOT NULL,
+date DATETIME NOT NULL );
+
+DESCRIBE locations;
++-----------+-------------+------+-----+---------+----------------+
+| Field     | Type        | Null | Key | Default | Extra          |
++-----------+-------------+------+-----+---------+----------------+
+| id        | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name      | varchar(50) | NO   |     | NULL    |                |
+| latitude  | double      | NO   |     | NULL    |                |
+| longitude | double      | NO   |     | NULL    |                |
+| date      | datetime    | NO   |     | NULL    |                |
++-----------+-------------+------+-----+---------+----------------+

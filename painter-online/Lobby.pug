@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible", content="ie=edge")
+    title Document    
+    script(src="http://code.jquery.com/jquery-1.11.1.min.js")
+    script(src="/socket.io/socket.io.js")
+    script.
+      $(document).ready(function () {
+        function addRoom (data) {
+          $.each(data, function (index, item) {
+              $('<button></button>').attr({
+                'data-room': item
+              }).text('Room Name: ' + item).appendTo('#container');
+            });
+        }
+
+        $.getJSON('/room', function (data) {
+          addRoom(data);
+        });
+
+        var socket = io.connect();
+        socket.on('create_room', function (data) {
+          addRoom(data);
+        })
+
+        // 방 리스트에 있는 버튼이 눌러지면 그 방으로 입장
+        $('#container').on('click', 'button', function () {
+          var room = $(this).attr('data-room');
+          location = '/canvas/' + room;
+        });
+
+        // body 바로 아래 있는 버튼이 눌러졌을 때 방 만들고 입장
+        $('body > button').click(function () {
+          var room = $('#room').val();
+          socket.emit('create_room', room)
+          location = '/canvas/' + room
+        })
+      });
+  body
+    h1 Rint Real Time Canvas
+    p Connect Web Server With Socket.io
+    input(id="room")
+    button CREATE ROOM
+    hr
+    div(id="container")

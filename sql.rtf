@@ -1,0 +1,259 @@
+{\rtf1\ansi\ansicpg949\cocoartf1404\cocoasubrtf470
+{\fonttbl\f0\fnil\fcharset0 Monoid-Regular;\f1\fnil\fcharset0 Monoid-Bold;}
+{\colortbl;\red255\green255\blue255;\red18\green26\blue24;\red242\green244\blue249;\red80\green170\blue220;
+}
+\paperw11900\paperh16840\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx560\tx1120\tx1680\tx2240\tx2800\tx3360\tx3920\tx4480\tx5040\tx5600\tx6160\tx6720\pardirnatural\partightenfactor0
+
+\f0\fs22 \cf2 \cb3 \CocoaLigature0 MariaDB [(none)]> CREATE DATABASE Company;\
+
+\f1\b \cf4 Query OK, 1 row affected (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [(none)]> USE Company\
+
+\f1\b \cf4 Database changed
+\f0\b0 \cf2 \
+MariaDB [Company]> CREATE TABLE products (\
+    -> id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,\
+    -> name VARCHAR(50) NOT NULL,\
+    -> modelnumber VARCHAR(15) NOT NULL,\
+    -> series VARCHAR(30) NOT NULL\
+    -> );\
+
+\f1\b \cf4 Query OK, 0 rows affected (0.02 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> DESCRIBE products;\
++-------------+-------------+------+-----+---------+----------------+\
+| Field       | Type        | Null | Key | Default | Extra          |\
++-------------+-------------+------+-----+---------+----------------+\
+| id          | int(11)     | NO   | PRI | NULL    | auto_increment |\
+| name        | varchar(50) | NO   |     | NULL    |                |\
+| modelnumber | varchar(15) | NO   |     | NULL    |                |\
+| series      | varchar(30) | NO   |     | NULL    |                |\
++-------------+-------------+------+-----+---------+----------------+\
+
+\f1\b \cf4 4 rows in set (0.01 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> INSERT INTO Company (name, modelnumber, series) VALUES\
+    -> ('Biography Of Jon Doe', '15881588', 'Biography');\
+ERROR 1146 (42S02): Table 'company.company' doesn't exist\
+MariaDB [Company]> INSERT INTO products (name, modelnumber, series) VALUES ('Biography Of Jon Doe', '15881588', 'Biography');\
+
+\f1\b \cf4 Query OK, 1 row affected (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> INSERT INTO products (name, modelnumber, series) VALUES ('Flume', '18858813', 'Artist'),\
+    -> ('America', '11235813', 'Nation'),\
+    -> ('X', '1885123', 'Phone')\
+    -> , \
+    -> ('Cup head', '12313435', 'Game')\
+    -> \
+    -> ;\
+
+\f1\b \cf4 Query OK, 4 rows affected (0.01 sec)
+\f0\b0 \cf2 \
+
+\f1\b \cf4 Records: 4  Duplicates: 0  Warnings: 0
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT * FROM products;\
++----+----------------------+-------------+-----------+\
+| id | name                 | modelnumber | series    |\
++----+----------------------+-------------+-----------+\
+|  1 | Biography Of Jon Doe | 15881588    | Biography |\
+|  2 | Flume                | 18858813    | Artist    |\
+|  3 | America              | 11235813    | Nation    |\
+|  4 | X                    | 1885123     | Phone     |\
+|  5 | Cup head             | 12313435    | Game      |\
++----+----------------------+-------------+-----------+\
+
+\f1\b \cf4 5 rows in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT * FROM products \
+    -> WHERE series='Game';\
++----+----------+-------------+--------+\
+| id | name     | modelnumber | series |\
++----+----------+-------------+--------+\
+|  5 | Cup head | 12313435    | Game   |\
++----+----------+-------------+--------+\
+
+\f1\b \cf4 1 row in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT * FROM products \
+    -> WHERE (series='Artist') OR (series='Nation')\
+    -> ;\
++----+---------+-------------+--------+\
+| id | name    | modelnumber | series |\
++----+---------+-------------+--------+\
+|  2 | Flume   | 18858813    | Artist |\
+|  3 | America | 11235813    | Nation |\
++----+---------+-------------+--------+\
+
+\f1\b \cf4 2 rows in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT * FROM products \
+    -> WHERE  modelnumber LIKE '18%';\
++----+-------+-------------+--------+\
+| id | name  | modelnumber | series |\
++----+-------+-------------+--------+\
+|  2 | Flume | 18858813    | Artist |\
+|  4 | X     | 1885123     | Phone  |\
++----+-------+-------------+--------+\
+
+\f1\b \cf4 2 rows in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT * FROM products  WHERE  modelnumber LIKE '18___';\
+
+\f1\b \cf4 Empty set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT * FROM products  WHERE  modelnumber LIKE '18_______';\
+
+\f1\b \cf4 Empty set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT * FROM products  WHERE  modelnumber LIKE '18________'; \
+
+\f1\b \cf4 Empty set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT * FROM products  WHERE  modelnumber LIKE '18_____';\
++----+------+-------------+--------+\
+| id | name | modelnumber | series |\
++----+------+-------------+--------+\
+|  4 | X    | 1885123     | Phone  |\
++----+------+-------------+--------+\
+
+\f1\b \cf4 1 row in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT id, name, series FROM products \
+    -> ORDER BY  name;\
++----+----------------------+-----------+\
+| id | name                 | series    |\
++----+----------------------+-----------+\
+|  3 | America              | Nation    |\
+|  1 | Biography Of Jon Doe | Biography |\
+|  5 | Cup head             | Game      |\
+|  2 | Flume                | Artist    |\
+|  4 | X                    | Phone     |\
++----+----------------------+-----------+\
+
+\f1\b \cf4 5 rows in set (0.01 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT id, name, series FROM products  ORDER BY  name DESC;\
++----+----------------------+-----------+\
+| id | name                 | series    |\
++----+----------------------+-----------+\
+|  4 | X                    | Phone     |\
+|  2 | Flume                | Artist    |\
+|  5 | Cup head             | Game      |\
+|  1 | Biography Of Jon Doe | Biography |\
+|  3 | America              | Nation    |\
++----+----------------------+-----------+\
+
+\f1\b \cf4 5 rows in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT * FROM  products LIMIT 2;\
++----+----------------------+-------------+-----------+\
+| id | name                 | modelnumber | series    |\
++----+----------------------+-------------+-----------+\
+|  1 | Biography Of Jon Doe | 15881588    | Biography |\
+|  2 | Flume                | 18858813    | Artist    |\
++----+----------------------+-------------+-----------+\
+
+\f1\b \cf4 2 rows in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT * FROM products LIMIT 2,2;\
++----+---------+-------------+--------+\
+| id | name    | modelnumber | series |\
++----+---------+-------------+--------+\
+|  3 | America | 11235813    | Nation |\
+|  4 | X       | 1885123     | Phone  |\
++----+---------+-------------+--------+\
+
+\f1\b \cf4 2 rows in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT * FROM products ORDER BY id ASC LIMIT 2;\
++----+----------------------+-------------+-----------+\
+| id | name                 | modelnumber | series    |\
++----+----------------------+-------------+-----------+\
+|  1 | Biography Of Jon Doe | 15881588    | Biography |\
+|  2 | Flume                | 18858813    | Artist    |\
++----+----------------------+-------------+-----------+\
+
+\f1\b \cf4 2 rows in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT series FROM products \
+    -> GROUP BY series;\
++-----------+\
+| series    |\
++-----------+\
+| Artist    |\
+| Biography |\
+| Game      |\
+| Nation    |\
+| Phone     |\
++-----------+\
+
+\f1\b \cf4 5 rows in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> SELECT series FROM products\
+    -> ;\
++-----------+\
+| series    |\
++-----------+\
+| Biography |\
+| Artist    |\
+| Nation    |\
+| Phone     |\
+| Game      |\
++-----------+\
+
+\f1\b \cf4 5 rows in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+MariaDB [Company]> INSERT INTO products (name, modelnumber, series) VALUES ('Node.js', '123123143', 'Programming');\
+
+\f1\b \cf4 Query OK, 1 row affected (0.00 sec)\
+\
+
+\f0\b0 \cf2 MariaDB [Company]> UPDATE products\
+    -> SET name='G6' \
+    -> WHERE id=4;\
+
+\f1\b \cf4 Query OK, 1 row affected (0.01 sec)
+\f0\b0 \cf2 \
+
+\f1\b \cf4 Rows matched: 1  Changed: 1  Warnings: 0\
+\
+
+\f0\b0 \cf2 MariaDB [Company]> SELECT * FROM products;\
++----+----------------------+-------------+-------------+\
+| id | name                 | modelnumber | series      |\
++----+----------------------+-------------+-------------+\
+|  1 | Biography Of Jon Doe | 15881588    | Biography   |\
+|  2 | Flume                | 18858813    | Artist      |\
+|  3 | America              | 11235813    | Nation      |\
+|  4 | G6                   | 1885123     | Phone       |\
+|  5 | Cup head             | 12313435    | Game        |\
+|  6 | Node.js              | 123123143   | Programming |\
++----+----------------------+-------------+-------------+\
+
+\f1\b \cf4 6 rows in set (0.00 sec)
+\f0\b0 \cf2 \
+\
+}
